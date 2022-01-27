@@ -171,7 +171,7 @@ export default {
       })
     }
   },
-  async convertMarkdown({ commit, dispatch, state }, payload) {
+  async convertMarkdown({ commit, dispatch }, payload) {
     try {
       const loadingNotification = {
         content: "Converting...",
@@ -189,7 +189,7 @@ export default {
       await commit("setMarkup", response.data)
       await commit("removeNotification", loadingNotification)
       await commit("addNotification", {
-        content: "Profile successfully updated",
+        content: "Markdown converted to Markup",
         color: "success",
       })
     } catch (error) {

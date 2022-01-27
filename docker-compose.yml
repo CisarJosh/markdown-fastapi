@@ -17,11 +17,12 @@ services:
       # Do not expose all Docker services, only the ones explicitly exposed
       - --providers.docker.exposedbydefault=false
       # Enable Docker Swarm mode
-      - --providers.docker.swarmmode
+      # - --providers.docker.swarmmode
       # Enable the access log, with HTTP requests
       - --accesslog
       # Enable the Traefik log, for configurations and errors
       - --log
+      - --accesslog
       # Enable the Dashboard and API
       - --api
     deploy:
@@ -112,7 +113,7 @@ services:
     # You also have to change the flower command
   
   flower:
-    image: mher/flower
+    image: mher/flower:0.9.5
     networks:
       - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
       - default

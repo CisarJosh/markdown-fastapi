@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.markdown.mark import Markdown
+from app.markdown import mark
 from typing import Optional
 from pydantic import BaseModel
 
@@ -16,5 +16,5 @@ def convert(doc: Doc) -> str:
     """
     Convert Simple Markdown to HTML Markup
     """
-    print(doc)
-    return Markdown.render_html(doc.data)
+    pass
+    return mark.Markdown.render_html(doc.data)

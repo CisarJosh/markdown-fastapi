@@ -1,6 +1,6 @@
 import re
 
-
+# TODO Create a Tokenizer class
 
 class Markdown:
     
@@ -35,12 +35,18 @@ class Markdown:
         line_number = 1
         hashmap = {}
         for line in doc.splitlines(True):
+            if "\n" not in line:
+                line = line + '\n'
             if line.split() == [] or line == '':
                 pass
             link = re.findall(r'\[([^\[]+)]\(\s*(http[s]?://.+)\s*\)', line)
             if len(link) > 1:
-                for l in link:
-                    print(l)
+                pass
+                # Convert to working link replacement for multiple links
+                # for l in link:
+                #     html_link = f'<a href="{link[0][1]}">{link[0][0]}</a>'
+                #     new_line = re.sub(r'\[([^\[]+)]\(\s*(http[s]?://.+)\s*\)', html_link, line )
+                #     line = new_line
             elif link:
                 html_link = f'<a href="{link[0][1]}">{link[0][0]}</a>'
                 new_line = re.sub(r'\[([^\[]+)]\(\s*(http[s]?://.+)\s*\)', html_link, line )
@@ -61,24 +67,7 @@ class Markdown:
             
 
 
-
-# # doc = """# Header one
-
-# # Hello there
-
-# # How are you?
-# # What's going on?
-
-# # ## Another Header
-
-# # This is a paragraph [with an inline link](http://google.com). Neat, eh?
-
-# # ## This is a header [with a link](http://yahoo.com)
-# # """
-
-# print(Markdown.render_html(doc))
-
-
+markdown = Markdown()
 
         
     
