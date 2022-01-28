@@ -831,8 +831,3 @@ $ cookiecutter --config-file ./cookiecutter-config-file.yml --output-dir ../proj
 ```
 
 That will use the file `cookiecutter-config-file.yml` in the current directory (in this project) to generate a new project inside a sibling directory `project-copy`.
-
-docker-machine create \
--d digitalocean --digitalocean-image ubuntu-16-04-x64\
---digitalocean-access-token 45fbd0e0f3b1c87e55b778ec3a8ed0df5adbdd743d715d9fbab4ddd732e3587f \
-mark2

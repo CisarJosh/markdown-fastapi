@@ -12,10 +12,11 @@ export default {
 
   // Env: https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-env/
   env: {
-    baseUrl: `http://${process.env.VUE_APP_DOMAIN}` || "https://mark.joshcisar.com",
+    baseUrl:
+      `http://${process.env.VUE_APP_DOMAIN}` || "https://mark.joshcisar.com",
     appName: process.env.VUE_APP_NAME,
-    apiUrl: `http://localhost`,
-    // apiUrl: `https://mark.joshcisar.com`,
+    // apiUrl: `http://localhost`,
+    apiUrl: "https://mark.joshcisar.com",
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css

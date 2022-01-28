@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.6"
 services:
 
   proxy:
@@ -17,7 +17,7 @@ services:
       # Do not expose all Docker services, only the ones explicitly exposed
       - --providers.docker.exposedbydefault=false
       # Enable Docker Swarm mode
-      # - --providers.docker.swarmmode
+      - --providers.docker.swarmmode
       # Enable the access log, with HTTP requests
       - --accesslog
       # Enable the Traefik log, for configurations and errors
@@ -87,8 +87,8 @@ services:
     networks:
       - ${TRAEFIK_PUBLIC_NETWORK?Variable not set}
       - default
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
     env_file:
       - .env
     deploy:
@@ -139,9 +139,9 @@ services:
         - traefik.http.services.${STACK_NAME?Variable not set}-flower.loadbalancer.server.port=5555
   
   backend:
-    image: '${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
-    depends_on:
-      - db
+    image: 'cisar/${DOCKER_IMAGE_BACKEND?Variable not set}:${TAG-latest}'
+    # depends_on:
+    #   - db
     env_file:
       - .env
     environment:
@@ -162,10 +162,10 @@ services:
         - traefik.http.services.${STACK_NAME?Variable not set}-backend.loadbalancer.server.port=80
   
   celeryworker:
-    image: '${DOCKER_IMAGE_CELERYWORKER?Variable not set}:${TAG-latest}'
-    depends_on:
-      - db
-      - queue
+    image: 'cisar/${DOCKER_IMAGE_CELERYWORKER?Variable not set}:${TAG-latest}'
+    # depends_on:
+    #   - db
+    #   - queue
     env_file:
       - .env
     environment:
@@ -180,7 +180,7 @@ services:
         INSTALL_DEV: ${INSTALL_DEV-false}
   
   frontend:
-    image: '${DOCKER_IMAGE_FRONTEND?Variable not set}:${TAG-latest}'
+    image: 'cisar/${DOCKER_IMAGE_FRONTEND?Variable not set}:${TAG-latest}'
     build:
       context: ./frontend
       args:
