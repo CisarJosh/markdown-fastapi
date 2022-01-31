@@ -22,16 +22,31 @@ class Markdown:
             return f'<h{self.size}>{self.content}</h{self.size}>'
 
     @classmethod
-    def linkfinder(self, token: str) -> str:
-        match = self.link_pattern.match(token)
-        if match:
-            return f'<a href="{match.group(2)}">{match.group(1)}</a>'
+    def linkfinder(self, line: str) -> str:
+        name_regex = "[^]]+"
+        url_regex = "http[s]?://[^)]+"
+        markup_regex = f'\[({name_regex})]\(\s*({url_regex})\s*\)'
+
+        for match in re.findall(markup_regex, line):
+            html_link = f'<a href="{match[1]}">{match[0]}</a>'
+
+            new_line = re.sub(f'\[({match[0]})]\(\s*({match[1]})\s*\)', html_link, line) 
+            line = new_line
+        return line
+
     @classmethod
     def paragraph(self, line: str) -> str:
         if line != '':
             return f'<p>{line}</p>'
+
     @classmethod
     def render_html(self, doc: str) -> str:
+        """
+        Render HTML from Markdown input string
+        :param doc: Markdown Content String to process. 
+        Capable of processing headers, paragraphs, links inline, ignoring blank lines.
+        :returns: HTML String
+        """
         line_number = 1
         hashmap = {}
         for line in doc.splitlines(True):
@@ -39,28 +54,11 @@ class Markdown:
                 line = line + '\n'
             if line.split() == [] or line == '':
                 pass
-            link = re.findall(r'\[([^\[]+)]\(\s*(http[s]?://.+)\s*\)', line)
-            if len(link) > 1:
-                pass
-                # Convert to working link replacement for multiple links
-                # for l in link:
-                #     html_link = f'<a href="{link[0][1]}">{link[0][0]}</a>'
-                #     new_line = re.sub(r'\[([^\[]+)]\(\s*(http[s]?://.+)\s*\)', html_link, line )
-                #     line = new_line
-            elif link:
-                html_link = f'<a href="{link[0][1]}">{link[0][0]}</a>'
-                new_line = re.sub(r'\[([^\[]+)]\(\s*(http[s]?://.+)\s*\)', html_link, line )
-                line = new_line
-                if Markdown.heading_line(line):
-                    hashmap[line_number] = Markdown.heading_line(line)
-                else:
-                    hashmap[line_number] = Markdown.paragraph(line)
+            line = self.linkfinder(line)
+            if Markdown.heading_line(line):
+                hashmap[line_number] = Markdown.heading_line(line)
             else:
-                if Markdown.heading_line(line):
-                    hashmap[line_number] = Markdown.heading_line(line)
-                    
-                else:
-                    hashmap[line_number] = Markdown.paragraph(line)
+                hashmap[line_number] = Markdown.paragraph(line)
             line_number += 1
         html = [hashmap[line] for line in hashmap]
         return "".join(html)
@@ -68,7 +66,3 @@ class Markdown:
 
 
 markdown = Markdown()
-
-        
-    
-    
